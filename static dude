@@ -1,0 +1,17 @@
+t = 0
+
+def setup():
+    size(200, 200)
+ 
+def draw():
+    global t
+    loadPixels()
+    for y in range(height):
+        for x in range(width):
+            index = x + y*width
+            r = noise(t)
+            r = random(256)
+            pixels[index] = color(r, r, r)
+            t += .1
+    updatePixels()
+    print(frameRate)
