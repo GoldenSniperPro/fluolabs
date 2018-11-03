@@ -1,0 +1,59 @@
+score = 0
+time = 60
+gameOver = False
+gliding = False
+glideCount = 0
+
+def setup():
+    global x, y
+    size(480, 360)
+    x = width/2
+    y = height/2
+    
+def draw():
+    global time, x, y, gameOver, gliding, glideCount
+    background(0)
+    fill(255)
+    textSize(20)
+    text("Score: " + str(score), 0, 30)
+    text("Time: " + str(time), 0, 50)
+    
+    if (frameCount % 120 == 0):
+        time = time - 2
+        x = random(width)
+        y = random(height)
+        
+    if (time == 0):
+        gameOver = True
+        text("Taylor DOO DOO!", width/2 - 50, height/2)
+        noLoop()
+        
+    # animate gliding
+    if (gliding):
+        x += xGlide
+        y += yGlide
+        glideCount += 1
+        if(glideCount > 29):
+            gliding = False
+        
+    #draw sprite
+    fill(random(256), random(256), random(256))
+    ellipse(x, y, 30, 30)
+    
+    #display info
+    text("Score: " + str(score), 0, 30)
+    text("Time: " + str(time), 0, 50)
+    
+def mouseClicked():
+    global score, gliding, glideCount, xGlide, yGlide
+    d = dist(x, y, mouseX, mouseY)
+    if (d < 15):
+        score = score + 10
+        gliding = True
+        glideCount = 0
+        destX = random(width)
+        destY = random(height)
+        xGlide = (destX - x) / 30
+        yGlide = (destY - y) / 30
+    else:
+        score = score - 0q  sasXrDQWD
