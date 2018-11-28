@@ -1,0 +1,122 @@
+add_library('minim')
+
+dict = {'remuneration': 'paying for goods or services or to recompense for losses',
+        'bilk': 'cheat somebody out of what is due, especially money',
+        'engender': 'call forth',
+        'harangue': 'a loud bombastic declamation expressed with strong emotion',
+        'abrogate': 'revoke formally' }
+
+word = None
+defn = None
+uWord = None
+gameOver = False
+
+kb = []
+kbx = []
+kby = []
+
+def setup():
+    global typeSound
+    size(800, 800)
+    textSize(30)
+    textAlign(CENTER)
+    minim = Minim(this)
+    typeSound = minim.loadSample("type.mp3")
+    
+    iniKeyboard()
+    setWord()
+
+def draw():
+    background(0)
+
+    # Show word as underlined
+    fill(0, 255, 0)
+    text(uWord, width/2, 50)
+
+    # Show definition
+    fill(255)
+    text(defn, 0, height - 100, width, 100)
+    
+    #Show keyboard
+    if (gameOver == False):
+        drawKeyboard()
+
+    # Show Game Over string to stop program
+    if (gameOver):
+        background(0)
+        text("Game Over!", width/2, height/2)
+        noLoop()
+
+def keyTyped():
+    global uWord, gameOver
+    inx = uWord.index('_')
+    if (word[inx] == key):
+        typeSound.trigger()
+        uWord = uWord[:inx] + key + uWord[inx+1:] 
+        # Typed last char of the word
+        if (inx == len(word) -1):
+            setWord()
+
+def setWord():
+    global word, uWord, defn, gameOver
+    if (len(dict) == 0):
+        gameOver = True
+    else:
+        word, defn = dict.popitem()
+        uWord = '_' * len(word)
+        
+def addKey(k, x, y):
+    kb.append(k)
+    kbx.append(x)
+    kby.append(y)
+    
+def iniKeyboard():
+    cx = width/2
+    cy = height/2
+    s = 40
+    gap = 7
+    # middle row left hand
+    for idx, val in enumerate(['g', 'f', 'd', 's', 'a']):
+         addKey(val, cx - s*(idx+1) - gap*(idx), cy) 
+    
+    # middle row right hand
+    for idx, val in enumerate(['h', 'j', 'k', 'l', ';', '\'']):
+         addKey(val, cx + s*(idx+1) + gap*(idx), cy) 
+         
+    # upper row left hand
+    for idx, val in enumerate(['t', 'r', 'e', 'w', 'q']):
+         addKey(val, cx - gap - s*(idx+1) - gap*(idx), cy - s - gap)
+         
+    # upper row right hand
+    for idx, val in enumerate(['y', 'u', 'i', 'o', 'p', '[', ']', '\\']):
+         addKey(val, cx - gap + s*(idx+1) + gap*(idx), cy - s - gap)
+         
+    # down row left hand
+    for idx, val in enumerate(['b', 'v', 'c', 'x', 'z']):
+         addKey(val, cx + gap - s*(idx+1) - gap*(idx), cy + s + gap)
+         
+    # down row right hand
+    for idx, val in enumerate(['n', 'm', ',', '.', '/']):
+         addKey(val, cx + gap + s*(idx+1) + gap*(idx), cy + s + gap)
+         
+def drawKeyboard():
+    cx = width/2
+    cy = height/2
+    s = 40
+    gap = 7
+    stroke(255)
+    noFill()
+    
+    inx = -1
+    if (word != None):
+        inx = uWord.index('_')
+        
+    ellipse(width/2, height/2, 5, 5)
+    for i in range(len(kb)):
+        ellipse(kbx[i], kby[i], s, s)
+        if (inx == -1):
+            text(kb[i], kbx[i], kby[i] + gap)
+        elif (word[inx] == kb[i]):
+            pass
+        else:
+            text(kb[i], kbx[i], kby[i] + gap)
