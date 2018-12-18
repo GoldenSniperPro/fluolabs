@@ -1,10 +1,10 @@
 add_library('minim')
 
-dict = {'remuneration': 'paying for goods or services or to recompense for losses',
-        'bilk': 'cheat somebody out of what is due, especially money',
-        'engender': 'call forth',
-        'harangue': 'a loud bombastic declamation expressed with strong emotion',
-        'abrogate': 'revoke formally' }
+dict = {'Clean': 'Lavar',
+        'Bathroom': 'Bano',
+        'Cat': 'Gato',
+        'Dog': 'Perro',
+        'Hello': 'Hola' }
 
 word = None
 defn = None
